@@ -3,13 +3,29 @@ name: Generate ASCII workflow
 on: push
 
 jobs: 
-    ascii_job:
+    build_job:
         runs-on: ubuntu-22.04
-        steps: 
-        - name: checkout
-          uses: actions/checkout@v6    
+        steps:  
+        - name: Install cowsay
+          run: sudo apt-get install cowsay -y
 
-        - name: Execute shell script
-          run: |
-            chmod +x ascii.sh
-            ./ascii.sh
+        - name: execute cowsay
+          run: cowsay -f dragon "run for dragon" >> dragon.txt
+          
+        - name: sleep for 30 sec
+          run: sleep 30 
+          
+    test_job:
+        runs-on: ubuntu-22.04
+        steps:
+        - name: sleep for 10 sec
+          run: sleep 10
+          
+        - name: test file
+          run: grep -i "dragon" dragon.txt
+
+    deploy_job:
+        runs-on: ubuntu-22.04
+        steps:
+        - name: read file
+          run: cat README.md            
